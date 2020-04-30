@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,20 +33,19 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-
 <body>
 <div id="cabeceraMenu">
 
 </div>
 <br>
-<section class="container">
-    <br>
-    <div class="container">
-        <div class="form-group col-md-12">
-            <h4 class="my-4">Rendir evaluación</h4>
+    <section class="container">
+        <br>
+        <div class="container">
+            <div class="form-group col-md-12">
+                <h4 class="my-4">Autoevaluación</h4>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 <section class="container">
     <input type="hidden" id="nivelUsuario">
     <div class="form-group col-md-8">
@@ -67,8 +65,19 @@
         </section>
         <section class="container">
             <div class="form-group col-md-4">
-                <label for="txtFecha">Fecha: </label>
-                 <input type='text' class="form-control" id="txtFecha" disabled="disabled" />
+                <label>Dificultad: </label>
+                <div>
+                <input type="radio" name="idDificultad" value="F"/> Fácil
+                </div>
+                <div>
+                    <input type="radio" name="idDificultad" value="N"/> Normal
+                </div>
+                <div>
+                    <input type="radio" name="idDificultad" value="D"/> Difícil
+                </div>
+                <div>
+                    <input type="radio" name="idDificultad" value="A"/> Avanzado
+                </div>
             </div>
         </section>
         <section class="container">
@@ -81,15 +90,15 @@
         <section class="container">
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <button id="btnRendirEvaluacion" class="btn btn-primary" >Rendir evaluación</button>
+                    <button id="btnRendirAutoEvaluacion" class="btn btn-primary" >Rendir Autoevaluación</button>
                 </div>
             </div>
         </section>
     </div>
 </section>
-<div id="Footer">
+ <div id="Footer">
 
-</div>
+ </div>
 
 <script src="assets/js/jquery.min.js "></script>
 <script src="assets/js/jquery-migrate.min.js "></script>
@@ -125,8 +134,7 @@
 <script src="assets/js/cube-portfolio.js " type="text/javascript "></script>
 <script src="assets/js/pace.min.js " type="text/javascript "></script>
 
-<script type="text/javascript">
-   $(document).ready(function () {
+<script>
       $("#cabeceraMenu").load('cabeceraMenu.html');
       $("#Footer").load('Footer.html');
 
@@ -143,143 +151,127 @@
        else{
           $("#idusuario").val(idusuario);
           $("#txtUsuario").val(nombrealumno);
-          LLenarEvaluacionPorUsuario()
           MostrarNivelUsuario($("#idusuario").val());
+          LLenarEvaluacionPorUsuario();
       }
 
-      ObtenerFechaActual();
 
 
-   });
+      $("input[type=radio][name=idDificultad]").change(function() {
+        LLenarEvaluacionPorUsuario();
+      });
 
-     $( "#btnRendirEvaluacion" ).click(function() {
-            var ExisteEvaluacion = false;
-            var fechaEvaluacion = "";
-            var duracionEvaluacion = "";
-            var fechaFinEvaluacion = "";
+ $( "#btnRendirAutoEvaluacion" ).click(function()
+ {
+     if($('input[type=radio][name=idDificultad]:checked').val() == undefined)
+     {
+        alert("Debe seleccionar una dificultad")
+        return false;
+     }
 
-            var idevaluacionSelected = $("#idEvaluacion").val();
-            var nombreNivelSelected = document.getElementById("idNivel").options[document.getElementById("idNivel").selectedIndex].text;
-            var fechaSelected = $("#txtFecha").val();
+     var dificultad = $('input[type=radio][name=idDificultad]:checked').val();
+     var ExisteEvaluacion = false;
+     var idevaluacionSelected = $("#idEvaluacion").val();
+     var nombreNivelSelected = document.getElementById("idNivel").options[document.getElementById("idNivel").selectedIndex].text;
 
-            $.get( "http://localhost:8080/api/evaluacionxusuario/" + $("#idusuario").val() + "/1", function(data){
-
-                for(var i=0; i<data.length; i++)
-                {
-
-                    if(data[i].idevaluacion == idevaluacionSelected && data[i].nombrenivelestudio == nombreNivelSelected)
-                    {
-                        ExisteEvaluacion = true;
-                        fechaEvaluacion = data[i].fechainicio;
-                        duracionEvaluacion = data[i].duracion;
-                        break;
-                    }
-                }
-
-                if(ExisteEvaluacion == true)
-                {
-                    debugger;
-                    var comboEvaluacion = $("#idEvaluacion").val();
-                    var nombreComboEvaluacion = $("#idEvaluacion option:selected").text();
-
-                    var comboNivel =  $("#idNivel").val();
-                    var nombreComboNivel = $("#idNivel option:selected").text();
-
-                    var comboUsuario =  $("#idusuario").val();
-                    var nombrecomboUsuario = $("#txtUsuario").val();
-
-                    localStorage.setItem("idusuario", comboUsuario);
-                    localStorage.setItem("nombreUsuario", nombrecomboUsuario);
-
-                    localStorage.setItem("idEvaluacion", comboEvaluacion);
-                    localStorage.setItem("nombreEvaluacion", nombreComboEvaluacion);
-
-                    localStorage.setItem("duracion", duracionEvaluacion);
-                    localStorage.setItem("fechaEvaluacion", fechaEvaluacion);
-
-                    localStorage.setItem("fechaFinEvaluacion", fechaFinEvaluacion);
-
-                    localStorage.setItem("idnivel", comboNivel);
-                    localStorage.setItem("nombrenivel", nombreComboNivel);
-
-                    window.location.href = 'DetallePrevioRendirEvaluacion.html';
-                }
-                else
-                {
-                   window.location.href = 'ExamenNoProgramado.html';
-                }
-            });
-        });
-
-    function MostrarNivelUsuario(idusuario)
-    {
-       $.get( "http://localhost:8080/api/usuario/1", function(data){
-            for(var i = 0; i<data.length; i++)
+     $.get( "http://localhost:8080/api/autoevaluacionxusuario/" + $("#idusuario").val() + "/" + dificultad, function(data)
+     {
+         for(var i=0; i<data.length; i++)
+         {
+            if(data[i].idevaluacion == idevaluacionSelected && data[i].nombrenivelestudio == nombreNivelSelected)
             {
-               if(data[i].idusuario== idusuario)
-               {
-                  $("#nivelUsuario").val(data[i].idnivelestudio)
-                  MostrarComboNivelUsuario(data[i].idnivelestudio)
-               }
+                ExisteEvaluacion = true;
+                duracionEvaluacion = data[i].duracion;
+                break;
             }
-      });
-    }
+         }
 
-    function MostrarComboNivelUsuario(idnivelEstudio)
-    {
-            //llenar niveles de estudio
-            $("#idNivel").html('');
-            $.get( "http://localhost:8080/api/nivelestudio/" + idnivelEstudio, function(data){
-             var x = "[" + JSON.stringify(data) + "]";
-             var z = (JSON.parse(x))
-             $.each( z, function(index, value){
-                    $("#idNivel").append($('<option>', {
-                        value: value.idnivelestudio,
-                        text: value.nombrenivelestudio
-                    }));
-               });
+          if(ExisteEvaluacion == true)
+          {
+              var comboEvaluacion = $("#idEvaluacion").val();
+              var nombreComboEvaluacion = $("#idEvaluacion option:selected").text();
 
-                }).fail(function( data ){
-                    alert("Error");
+              var comboNivel =  $("#idNivel").val();
+              var nombreComboNivel = $("#idNivel option:selected").text();
 
+              var comboUsuario =  $("#idusuario").val();
+              var nombrecomboUsuario = $("#txtUsuario").val();
 
-            });
-    }
+              localStorage.setItem("idusuario", comboUsuario);
+              localStorage.setItem("nombreUsuario", nombrecomboUsuario);
 
-    function LLenarEvaluacionPorUsuario()
-    {
-        $("#idEvaluacion").html('');
-        $.get( "http://localhost:8080/api/evaluacionxusuario/" + $("#idusuario").val() + "/1", function(data){
-        $.each( data, function(index, value){
-            $("#idEvaluacion").append($('<option>', {
-                value: value.idevaluacion,
-                text: value.tituloevaluacion
-            }));
+              localStorage.setItem("idEvaluacion", comboEvaluacion);
+              localStorage.setItem("nombreEvaluacion", nombreComboEvaluacion);
+
+              localStorage.setItem("duracion", duracionEvaluacion);
+              localStorage.setItem("dificultad", dificultad);
+
+              localStorage.setItem("idnivel", comboNivel);
+              localStorage.setItem("nombrenivel", nombreComboNivel);
+
+              window.location.href = 'AutoEvaluacion.html';
+          }
+          else
+          {
+             window.location.href = 'rendirAutoEvaluacion.html';
+          }
+     });
+ });
+
+ function MostrarNivelUsuario(idusuario)
+ {
+    $.get( "http://localhost:8080/api/usuario/1", function(data){
+         for(var i = 0; i<data.length; i++)
+         {
+            if(data[i].idusuario== idusuario)
+            {
+               $("#nivelUsuario").val(data[i].idnivelestudio)
+               MostrarComboNivelUsuario(data[i].idnivelestudio)
+            }
+         }
+   });
+ }
+
+ function MostrarComboNivelUsuario(idnivelEstudio)
+ {
+         //llenar niveles de estudio
+         $("#idNivel").html('');
+         $.get( "http://localhost:8080/api/nivelestudio/" + idnivelEstudio, function(data){
+          var x = "[" + JSON.stringify(data) + "]";
+          var z = (JSON.parse(x))
+          $.each( z, function(index, value){
+                $("#idNivel").append($('<option>', {
+                     value: value.idnivelestudio,
+                     text: value.nombrenivelestudio
+                 }));
+
+             });
+             }).fail(function( data ){
+                 alert("Error");
+    });
+ }
+ function LLenarEvaluacionPorUsuario()
+ {
+     if($('input[type=radio][name=idDificultad]:checked').val() == undefined)
+     {
+     }
+     else
+     {
+          var dificultad = $('input[type=radio][name=idDificultad]:checked').val();
+          $("#idEvaluacion").html('');
+
+          $.get( "http://localhost:8080/api/autoevaluacionxusuario/" + $("#idusuario").val() + "/" + dificultad, function(data){
+          $.each( data, function(index, value){
+              $("#idEvaluacion").append($('<option>', {
+                  value: value.idevaluacion,
+                  text: value.tituloevaluacion
+              }));
+          });
+          }).fail(function( data ){
+              alert("Error");
         });
-        }).fail(function( data ){
-            alert("Error");
-      });
-    }
-
-
-    function ObtenerFechaActual()
-    {
-    /*
-        var now = new Date();
-        var month = (now.getMonth() + 1);
-        var day = now.getDate();
-        if (month < 10)
-            month = "0" + month;
-        if (day < 10)
-            day = "0" + day;
-        var today = day + '-' + month + '-' + now.getFullYear() ; */
-        $('#txtFecha').val("22/04/2020");
-
-    }
-
-
+   }
+ }
 </script>
 </body>
-
 </html>
-

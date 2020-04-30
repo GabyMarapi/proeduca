@@ -15,8 +15,8 @@ public class EvaluacionxusuarioNegocioService {
     @Autowired
     private EvaluacionxusuarioRepositorio evaluacionxusuarioRepositorio;
 
-    public List<Evaluacionxusuario> Evaluacionxusuario(int idusuario){
-        List<Evaluacionxusuario> listado = (List<Evaluacionxusuario>)evaluacionxusuarioRepositorio.ConsultaEvaluacionxUsuario(idusuario);
+    public List<Evaluacionxusuario> Evaluacionxusuario(int idusuario, int flag){
+        List<Evaluacionxusuario> listado = (List<Evaluacionxusuario>)evaluacionxusuarioRepositorio.ConsultaEvaluacionxUsuario(idusuario, flag);
         Evaluacionxusuario evaluacionxusuario = new Evaluacionxusuario();
         for(Evaluacionxusuario rep:listado){
             evaluacionxusuario.setIdevaluacion(rep.getIdevaluacion());

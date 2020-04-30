@@ -40,91 +40,10 @@
     </head>
 
 <body>
-<div class="top-bar-light">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4 hidden-xs">
-                <div class="top-bar-socials">
-                    <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-facebook">
-                        <i class="fa fa-facebook"></i>
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                    <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-twitter">
-                        <i class="fa fa-twitter"></i>
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                    <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-google-plus">
-                        <i class="fa fa-youtube"></i>
-                        <i class="fa fa-youtube"></i>
-                    </a>
-                    <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-instagram">
-                        <i class="fa fa-instagram"></i>
-                        <i class="fa fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="col-sm-8 text-right">
-                <ul class="list-inline top-dark-right">
-                    <li class="hidden-sm hidden-xs"><i class="fa fa-envelope"></i> dagama@gmail.com</li>
-                    <li class="hidden-sm hidden-xs"><i class="fa fa-phone"></i> 51 999999999 </li>
-                    <li><a class="topbar-icons" href="#"><span><i class="fa fa-search top-search"></i></span></a></li>
-                </ul>
-                <div class="search">
-                    <form role="form">
-                        <input type="text" class="form-control" autocomplete="off" placeholder="Buscar">
-                        <span class="search-close"><i class="fa fa-times"></i></span>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="cabeceraMenu">
+
 </div>
-<div class="navbar navbar-default navbar-static-top yamm sticky" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li class=" "><a href="index.html">Inicio</a></li>
-                <li class="  ">
-                    <a href="nosotros.html">Contáctenos</a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle " data-toggle="dropdown">Usuario <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="empresa.html"> Empresa</a></li>
-                        <li><a href="cine.html"> Cine</a></li>
-                    </ul>
-                </li>
-                <!--menu home li end here-->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle " data-toggle="dropdown">Operaciones <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="registrar_promocion.html"> Ingresar Promociones</a></li>
-                        <li><a href="buscar_promocion.html"> Buscar Promociones</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle " data-toggle="dropdown">Consultas <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="consultareserva.html"> Ventas</a></li>
-                    </ul>
-                </li>
-                <li class="  ">
-                    <a href="cartelera.html">Cartelera</a>
-                </li>
-            </ul>
-        </div>
-        <!--/.nav-collapse -->
-    </div>
-    <!--container-->
-</div>
+<br>
 <!--rev slider start-->
 
 <section class="container">
@@ -174,18 +93,9 @@
     </div>
   </div>
 </section>
-<footer class="container-fluid " >
-    <div class="row ">
-        <div class="col-md-12 text-center ">
-            <ul class="d-inline-block copyrigth ">
-                <li>Dagama Company</li>
-                <li>©Copyright 2019</li>
-                <!-- <li>Developed By Kreatico</li> -->
-            </ul>
-        </div>
-    </div>
-</footer>
+<div id="Footer">
 
+</div>
 <!--default footer end here-->
 <!--scripts and plugins -->
 <!--must need plugin jquery-->
@@ -233,7 +143,8 @@
 
 <script type="text/javascript">
         $( document ).ready(function() {
-
+      $("#cabeceraMenu").load('cabeceraMenu.html');
+      $("#Footer").load('Footer.html');
             ///llenar el rubro en el combo
             $("#idrubro").html('');
             $.get( "http://localhost:8080/api/rubros", function(data){

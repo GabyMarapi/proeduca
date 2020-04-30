@@ -21,7 +21,6 @@ public class NivelEstudioNegocioService {
         for(Nivelestudio rep:listado){
             nivelEstudio.setIdnivelestudio(rep.getIdnivelestudio());
             nivelEstudio.setNombrenivelestudio(rep.getNombrenivelestudio());
-            nivelEstudio.setIduniversidad(rep.getIduniversidad());
         }
         return listado;
     }

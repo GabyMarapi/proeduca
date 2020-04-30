@@ -1,8 +1,6 @@
 package com.dagama.proeduca.repositorio;
 
 import com.dagama.proeduca.entidades.Asignacionpregunta;
-import com.dagama.proeduca.entidades.Curso;
-import com.dagama.proeduca.entidades.Usuarioxtipo;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

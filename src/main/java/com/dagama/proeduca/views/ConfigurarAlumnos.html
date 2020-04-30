@@ -37,27 +37,40 @@
 <div id="cabeceraMenu">
 
 </div>
-<br>
 <section class="container">
-    <div class="form-row">
-        <div class="form-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong>No se encuentra una evaluación programada en esa fecha</strong><br><br>
-                    <div>
-                        <button id="btnSalirPrueba" class="btn btn-danger" style="left:400px;" onclick="window.location.href='rendirEvaluacion.html'">Volver</button>
-                    </div>
-                </div>
-
-            </div>
+    <br>
+    <div class="container">
+        <div class="form-group col-md-12">
+            <h4 class="my-4">Alumnos</h4>
         </div>
     </div>
 </section>
+<section class="container">
+    <div class="container">
+        <button class="btn btn-success" type="button" onclick="window.location.href='NuevoAlumnos.html'">Nuevo Alumno</button>
+    </div>
+    <br>
+    <div class="container">
+        <table class="table">
+          <tbody>
+               <th>Alumno</th>
+               <th>DNI</th>
+               <th>Nivel de Estudio</th>
+               <th>Universidad</th>
+               <th>Acciones</th>
+          </tbody>
+            <tbody id="dataAlumnos">
 
+            </tbody>
+        </table>
+    </div>
+</section>
 <div id="Footer">
 
 </div>
-
+<!--default footer end here-->
+<!--scripts and plugins -->
+<!--must need plugin jquery-->
 <script src="assets/js/jquery.min.js "></script>
 <script src="assets/js/jquery-migrate.min.js "></script>
 <!--bootstrap js plugin-->
@@ -85,16 +98,91 @@
 <script type="text/javascript " src="assets/rs-plugin/js/jquery.themepunch.tools.min.js "></script>
 <script type="text/javascript " src="assets/rs-plugin/js/jquery.themepunch.revolution.min.js "></script>
 <script type="text/javascript " src="assets/rs-plugin/videojs/video.js "></script>
+<!-- Include only when working on Local system. Not required on server -->
+<!-- <script type="text/javascript " src="assets/rs-plugin/js/extensions/revolution.extension.video.min.js "></script> -->
+<!-- <script type="text/javascript " src="assets/rs-plugin/js/extensions/revolution.extension.slideanims.min.js "></script> -->
+<!-- <script type="text/javascript " src="assets/rs-plugin/js/extensions/revolution.extension.navigation.min.js "></script> -->
+<!-- <script type="text/javascript " src="assets/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js "></script>     -->
 <script type="text/javascript " src="assets/js/revolution-custom.js "></script>
+<!-- Bootstrap Select (Dropdown Styling) -->
 <script src="assets/js/bootstrap-select.min.js " type="text/javascript "></script>
+<!-- jQuery UI (Date Picker) -->
 <script src="assets/js/jquery-ui.min.js " type="text/javascript "></script>
+<!--cube portfolio plugin-->
 <script src="assets/cubeportfolio/js/jquery.cubeportfolio.min.js " type="text/javascript "></script>
 <script src="assets/js/cube-portfolio.js " type="text/javascript "></script>
 <script src="assets/js/pace.min.js " type="text/javascript "></script>
-<!--rev slider start-->
 <script>
-     $("#cabeceraMenu").load('cabeceraMenu.html');
+  $(document).ready(function () {
+      $("#cabeceraMenu").load('cabeceraMenu.html');
       $("#Footer").load('Footer.html');
+      MostrarListadoAlumnos();
+  });
+
+function MostrarListadoAlumnos(){
+
+  var Universidad = "";
+  var NivelEstudio = "";
+  var NombreAlumno = "";
+  var DNIAlumno = "";
+  var IDAlumno = "";
+  var listAlumnos = [];
+
+  $.get("http://localhost:8080/api/alumnos", function(data){
+       for(var x = 0; x < data.length; x++)
+       {
+           NombreAlumno = data[x].nombrealumno
+           DNIAlumno = data[x].dni
+           IDAlumno = data[x].idalumno
+           ObtenerNivelEstudio(NombreAlumno,DNIAlumno,IDAlumno,data[x].idnivelestudio,data[x].iduniversidad,NivelEstudio)
+
+       }
+  });
+}
+
+
+function ObtenerNivelEstudio(NombreAlumno,DNIAlumno,IDAlumno,IDNivelEstudio,IDUniversidad,NivelEstudio)
+{
+      $.get( "http://localhost:8080/api/nivelestudio/" + IDNivelEstudio, function(data1)
+      {
+             var stringifydata = "[" + JSON.stringify(data1) + "]";
+             var parseJson = (JSON.parse(stringifydata))
+             NivelEstudio = parseJson[0].nombrenivelestudio
+             ObtenerUniversidad(NombreAlumno,DNIAlumno,IDAlumno,IDNivelEstudio,IDUniversidad,NivelEstudio)
+      });
+
+}
+
+function ObtenerUniversidad(NombreAlumno,DNIAlumno,IDAlumno,IDNivelEstudio,IDUniversidad,NivelEstudio)
+{
+    $.get("http://localhost:8080/api/universidades", function(data2) {
+       for(var y=0; y<data2.length; y++)
+       {
+          if(data2[y].iduniversidad == IDUniversidad)
+          {
+            Universidad = data2[y].nombreuniversidad
+
+
+            var tr = "<tr>";
+            tr += "<td>" + NombreAlumno+ "</td>";
+            tr += "<td>" + DNIAlumno + "</td>";
+            tr += "<td>" + NivelEstudio + "</td>";
+            tr += "<td>" + Universidad+ "</td>";
+            tr += "<td><button type='button' class='btn btn-primary' onclick='editarAlumno(" + IDAlumno + ")'>Editar Alumno</button></td>";
+            tr += "</tr>";
+            $("#dataAlumnos").append(tr)
+          }
+       }
+     });
+}
+
+function editarAlumno(idAlumno)
+{
+   localStorage.setItem("idalumno", idAlumno);
+   window.location.href='EditarAlumno.html'
+}
+
+
 </script>
 </body>
 </html>

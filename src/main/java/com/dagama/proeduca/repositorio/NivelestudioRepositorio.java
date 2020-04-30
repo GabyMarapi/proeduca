@@ -9,6 +9,6 @@ public interface NivelestudioRepositorio extends CrudRepository<Nivelestudio, Lo
     @Query("SELECT a FROM Nivelestudio a WHERE a.idnivelestudio=:idnivelestudio")
     public Nivelestudio buscarNivelEstudio(@Param("idnivelestudio") Long idnivelestudio);
 
-    @Query("SELECT new com.dagama.proeduca.entidades.Nivelestudio(a.idnivelestudio, a.nombrenivelestudio, a.iduniversidad) FROM Nivelestudio a")
+    @Query("SELECT new com.dagama.proeduca.entidades.Nivelestudio(a.idnivelestudio, a.nombrenivelestudio) FROM Nivelestudio a")
     public Iterable<Nivelestudio> obtenerReporteNivelEstudio();
 }

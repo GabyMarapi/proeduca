@@ -13,16 +13,14 @@ public class Nivelestudio {
     private Long idnivelestudio;
     @NotBlank
     private String nombrenivelestudio;
-    private int iduniversidad;
 
     public Nivelestudio(){
 
     }
 
-    public Nivelestudio(Long idnivelestudio, @NotBlank String nombrenivelestudio, int iduniversidad){
+    public Nivelestudio(Long idnivelestudio, @NotBlank String nombrenivelestudio){
         this.idnivelestudio = idnivelestudio;
         this.nombrenivelestudio = nombrenivelestudio;
-        this.iduniversidad = iduniversidad;
     }
 
     public Long getIdnivelestudio() {
@@ -39,13 +37,5 @@ public class Nivelestudio {
 
     public void setNombrenivelestudio(String nombrenivelestudio) {
         this.nombrenivelestudio = nombrenivelestudio;
-    }
-
-    public int getIduniversidad() {
-        return iduniversidad;
-    }
-
-    public void setIduniversidad(int iduniversidad) {
-        this.iduniversidad = iduniversidad;
     }
 }

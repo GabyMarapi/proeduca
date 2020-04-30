@@ -44,7 +44,7 @@
     <br>
     <div class="container">
         <div class="form-group col-md-12">
-            <h4 class="my-4">Rendir evaluación</h4>
+            <h4 class="my-4">Ver evaluación rendida</h4>
         </div>
     </div>
 </section>
@@ -58,19 +58,19 @@
                 <input type='text' class="form-control" id="txtUsuario" disabled="disabled" />
             </div>
         </section>
-        <section class="container">
+        <!-- <section class="container">
             <div class="form-group col-md-4">
                 <label for="idNivel">Nivel: </label>
                 <select class="form-control" id="idNivel" required="required">
                 </select>
             </div>
-        </section>
-        <section class="container">
+        </section> -->
+        <!-- <section class="container">
             <div class="form-group col-md-4">
                 <label for="txtFecha">Fecha: </label>
                  <input type='text' class="form-control" id="txtFecha" disabled="disabled" />
             </div>
-        </section>
+        </section> -->
         <section class="container">
             <div class="form-group col-md-4">
                 <label for="idEvaluacion">Evaluacion: </label>
@@ -81,7 +81,7 @@
         <section class="container">
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <button id="btnRendirEvaluacion" class="btn btn-primary" >Rendir evaluación</button>
+                    <button id="btnRendirEvaluacion" class="btn btn-primary" >Ver evaluación</button>
                 </div>
             </div>
         </section>
@@ -141,15 +141,11 @@
            window.location.href = "login.html";
        }
        else{
-          $("#idusuario").val(idusuario);
-          $("#txtUsuario").val(nombrealumno);
-          LLenarEvaluacionPorUsuario()
-          MostrarNivelUsuario($("#idusuario").val());
-      }
-
-      ObtenerFechaActual();
-
-
+              $("#idusuario").val(idusuario);
+              $("#txtUsuario").val(nombrealumno);
+              LLenarEvaluacionPorUsuario()
+              MostrarNivelUsuario($("#idusuario").val());
+       }
    });
 
      $( "#btnRendirEvaluacion" ).click(function() {
@@ -157,21 +153,23 @@
             var fechaEvaluacion = "";
             var duracionEvaluacion = "";
             var fechaFinEvaluacion = "";
+            var nombreNivelSelected = "";
 
             var idevaluacionSelected = $("#idEvaluacion").val();
-            var nombreNivelSelected = document.getElementById("idNivel").options[document.getElementById("idNivel").selectedIndex].text;
-            var fechaSelected = $("#txtFecha").val();
+            // var nombreNivelSelected = document.getElementById("idNivel").options[document.getElementById("idNivel").selectedIndex].text;
+            // var fechaSelected = $("#txtFecha").val();
 
-            $.get( "http://localhost:8080/api/evaluacionxusuario/" + $("#idusuario").val() + "/1", function(data){
+            $.get( "http://localhost:8080/api/evaluacionxusuario/" + $("#idusuario").val() + "/2", function(data){
 
                 for(var i=0; i<data.length; i++)
                 {
-
-                    if(data[i].idevaluacion == idevaluacionSelected && data[i].nombrenivelestudio == nombreNivelSelected)
+                    if(data[i].idevaluacion == idevaluacionSelected
+                     )
                     {
                         ExisteEvaluacion = true;
                         fechaEvaluacion = data[i].fechainicio;
                         duracionEvaluacion = data[i].duracion;
+                        nombreNivelSelected = data[i].nombrenivelestudio;
                         break;
                     }
                 }
@@ -182,8 +180,6 @@
                     var comboEvaluacion = $("#idEvaluacion").val();
                     var nombreComboEvaluacion = $("#idEvaluacion option:selected").text();
 
-                    var comboNivel =  $("#idNivel").val();
-                    var nombreComboNivel = $("#idNivel option:selected").text();
 
                     var comboUsuario =  $("#idusuario").val();
                     var nombrecomboUsuario = $("#txtUsuario").val();
@@ -199,10 +195,10 @@
 
                     localStorage.setItem("fechaFinEvaluacion", fechaFinEvaluacion);
 
-                    localStorage.setItem("idnivel", comboNivel);
-                    localStorage.setItem("nombrenivel", nombreComboNivel);
+                    // localStorage.setItem("idnivel", comboNivel);
+                    localStorage.setItem("nombrenivel", nombreNivelSelected);
 
-                    window.location.href = 'DetallePrevioRendirEvaluacion.html';
+                    window.location.href = 'DetallePrevioEvaluacionRendida.html';
                 }
                 else
                 {
@@ -219,37 +215,16 @@
                if(data[i].idusuario== idusuario)
                {
                   $("#nivelUsuario").val(data[i].idnivelestudio)
-                  MostrarComboNivelUsuario(data[i].idnivelestudio)
                }
             }
       });
     }
 
-    function MostrarComboNivelUsuario(idnivelEstudio)
-    {
-            //llenar niveles de estudio
-            $("#idNivel").html('');
-            $.get( "http://localhost:8080/api/nivelestudio/" + idnivelEstudio, function(data){
-             var x = "[" + JSON.stringify(data) + "]";
-             var z = (JSON.parse(x))
-             $.each( z, function(index, value){
-                    $("#idNivel").append($('<option>', {
-                        value: value.idnivelestudio,
-                        text: value.nombrenivelestudio
-                    }));
-               });
-
-                }).fail(function( data ){
-                    alert("Error");
-
-
-            });
-    }
 
     function LLenarEvaluacionPorUsuario()
     {
         $("#idEvaluacion").html('');
-        $.get( "http://localhost:8080/api/evaluacionxusuario/" + $("#idusuario").val() + "/1", function(data){
+        $.get( "http://localhost:8080/api/evaluacionxusuario/" + $("#idusuario").val() + "/2", function(data){
         $.each( data, function(index, value){
             $("#idEvaluacion").append($('<option>', {
                 value: value.idevaluacion,
@@ -261,22 +236,7 @@
       });
     }
 
-
-    function ObtenerFechaActual()
-    {
-    /*
-        var now = new Date();
-        var month = (now.getMonth() + 1);
-        var day = now.getDate();
-        if (month < 10)
-            month = "0" + month;
-        if (day < 10)
-            day = "0" + day;
-        var today = day + '-' + month + '-' + now.getFullYear() ; */
-        $('#txtFecha').val("22/04/2020");
-
-    }
-
+    
 
 </script>
 </body>

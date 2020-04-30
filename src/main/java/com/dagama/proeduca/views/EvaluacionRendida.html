@@ -43,41 +43,35 @@
 <div id="cabeceraMenu">
 
 </div>
- 
-    <section class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="title-page  text-center text-uppercase">NOSOTROS</h2>
-                <p>Somos una empresa innovadora </p>
-                <h4>misión</h4>
-                <p>Nuestra misión es ofrecer soluciones avanzadas de  
-                </p>
-                 <h4>Visión</h4>
-                <p>Consolidarnos como la empresa líder en el mercado, manteniendo un nivel de exigencia </p>
+<br>
+<section class="container">
+        <div class="card p-4 pr-4 pl-4" style="width: max-content;
+        margin: auto;">
+            <div class="mb-4">
+                <h4>Detalle del examen desarrollado</h4>
+            </div>
+            <div style="margin-bottom: 25px;">
+                 <strong>Evaluación: </strong><span id="ExamenConfiguracion"></span>
             </div>
            
-        </div>
 
-
-        <!-- <div class="row ">
-            <div class="col-md-12 ">
-                <div class="pagos ">
-                <h3 class="text-center ">Aceptamos todos los medios de pago sin intereses ni recargos adicionales</h3>
-                    <img src="assets/images/pagos.png " class="img-responsive ">
-                </div>
+            <div id="idResumen">
+              
             </div>
-        </div> -->
+            <div style="text-align: center;" >
+                <button id="btnContinuarPrueba" style="margin: auto;" class="btn btn-primary" onclick="window.location.href='PrevisualResumenExamen.html'">Salir</button>
+            </div>
+
+        
+        </div>
     </section>
 <div id="Footer">
 
 </div>
- 
-    <!--default footer end here-->
-    <!--scripts and plugins -->
-    <!--must need plugin jquery-->
-    <script src="assets/js/jquery.min.js "></script>
-    <script src="assets/js/jquery-migrate.min.js "></script>
-    <!--bootstrap js plugin-->
+
+<script src="assets/js/jquery.min.js "></script>
+<script src="assets/js/jquery-migrate.min.js "></script>
+<!--bootstrap js plugin-->
     <script src="assets/js/bootstrap.min.js " type="text/javascript "></script>
     <!--easing plugin for smooth scroll-->
     <script src="assets/js/jquery.easing.1.3.min.js " type="text/javascript "></script>
@@ -102,24 +96,60 @@
     <script type="text/javascript " src="assets/rs-plugin/js/jquery.themepunch.tools.min.js "></script>
     <script type="text/javascript " src="assets/rs-plugin/js/jquery.themepunch.revolution.min.js "></script>
     <script type="text/javascript " src="assets/rs-plugin/videojs/video.js "></script>
-    <!-- Include only when working on Local system. Not required on server -->
-    <!-- <script type="text/javascript " src="assets/rs-plugin/js/extensions/revolution.extension.video.min.js "></script> -->
-    <!-- <script type="text/javascript " src="assets/rs-plugin/js/extensions/revolution.extension.slideanims.min.js "></script> -->
-    <!-- <script type="text/javascript " src="assets/rs-plugin/js/extensions/revolution.extension.navigation.min.js "></script> -->
-    <!-- <script type="text/javascript " src="assets/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js "></script>     -->
     <script type="text/javascript " src="assets/js/revolution-custom.js "></script>
-    <!-- Bootstrap Select (Dropdown Styling) -->
     <script src="assets/js/bootstrap-select.min.js " type="text/javascript "></script>
-    <!-- jQuery UI (Date Picker) -->
     <script src="assets/js/jquery-ui.min.js " type="text/javascript "></script>
-    <!--cube portfolio plugin-->
     <script src="assets/cubeportfolio/js/jquery.cubeportfolio.min.js " type="text/javascript "></script>
     <script src="assets/js/cube-portfolio.js " type="text/javascript "></script>
     <script src="assets/js/pace.min.js " type="text/javascript "></script>
-<script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
       $("#cabeceraMenu").load('cabeceraMenu.html');
       $("#Footer").load('Footer.html');
-</script>
+      var idusuario = localStorage.getItem("idusuario");
+      var idEvaluacion = localStorage.getItem("idEvaluacion");
+      var nombreEvaluacion = localStorage.getItem("nombreEvaluacion");
+      document.getElementById("ExamenConfiguracion").innerHTML = nombreEvaluacion;
+
+
+        $.get("http://localhost:8080/api/mostrarsolucion/"+ idEvaluacion + "/" + idusuario, function (data) {
+            console.log('data', data);
+            var pregunta;
+            $("#idResumen").html('')
+            data.forEach(item => {
+                switch (item.flag) {
+                    case 0:
+                        pregunta = ` <h4>Pregunta ${item.numero}</h4>
+                                    <h5>${item.descripcion}</h5>`;
+                        break;
+                    case 1:
+                    pregunta += `<p> <span style="font-weight: bold;">
+                                Respuesta correcta:</span> ${item.descripcion}
+                                <a style="color: #428bca;    margin-left: 100px;
+                                text-decoration: underline;" href="${item.enlace}" target="_blank">Ver solución</a>
+                                </p> `;
+
+                    break;
+                    case 2:
+                        pregunta += `<p style="margin-bottom: 30px;"> <span style="font-weight: bold;">
+                                    Respuesta seleccionada:</span> ${item.descripcion} </p> `;
+                        $("#idResumen").append(pregunta);
+                        break;
+
+                    default:
+                        break;
+                }
+            });
+
+        }).fail(function (data) {
+            alert("Error");
+        });
+
+    
+    </script>
 </body>
 
 </html>

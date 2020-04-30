@@ -36,83 +36,9 @@
 </head>
 
 <body>
-    <div class="top-bar-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-4 hidden-xs">
-                    <div class="top-bar-socials">
-                        <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-facebook">
-                            <i class="fa fa-facebook"></i>
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                        <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-twitter">
-                            <i class="fa fa-twitter"></i>
-                            <i class="fa fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-google-plus">
-                            <i class="fa fa-youtube"></i>
-                            <i class="fa fa-youtube"></i>
-                        </a>
-                        <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-instagram">
-                            <i class="fa fa-instagram"></i>
-                            <i class="fa fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-sm-8 text-right">
-                    <ul class="list-inline top-dark-right">
-                        <li class="hidden-sm hidden-xs"><i class="fa fa-envelope"></i> proeduca@gmail.com</li>
-                        <li class="hidden-sm hidden-xs"><i class="fa fa-phone"></i> 999 999 999 </li>
-                        <li><a class="topbar-icons" href="#"><span><i class="fa fa-search top-search"></i></span></a>
-                        </li>
-                    </ul>
-                    <div class="search">
-                        <form role="form">
-                            <input type="text" class="form-control" autocomplete="off" placeholder="Buscar">
-                            <span class="search-close"><i class="fa fa-times"></i></span>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="navbar navbar-default navbar-static-top yamm sticky" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="index.html">Inicio</a></li>
-                    <li class="  ">
-                        <a href="nosotros.html">Nosotros</a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle " data-toggle="dropdown">Evaluaciones <i class="fa fa-angle-down"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="RegistrarExamen.html"> Configurar Evaluaciones</a></li>
-                            <li><a href="rendirEvaluacion.html"> Rendir evaluación</a></li>
-                            <li><a href="ExamenNoProgramado.html"> Autoevaluaciones</a></li>
-                        </ul>
-                    </li>
-                    <!--menu home li end here-->
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle " data-toggle="dropdown">Consultas <i class="fa fa-angle-down"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="reporteNotas.html"> Reporte de Notas</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <!--/.nav-collapse -->
-        </div>
-        <!--container-->
-    </div>
+<div id="cabeceraMenu">
+
+</div>
     <!--rev slider start-->
     <br>
     <section class="container">
@@ -158,20 +84,9 @@
             </div>
         </div>
     </section>
+<div id="Footer">
 
-    <footer class="container-fluid ">
-
-        <div class="row ">
-            <div class="col-md-12 text-center ">
-                <ul class="d-inline-block copyrigth ">
-                    <li>ProEduca>
-                    <li>©Copyright 2020</li>
-                    <!-- <li>Developed By Kreatico</li> -->
-                </ul>
-
-            </div>
-        </div>
-    </footer>
+</div>
 
     <script src="assets/js/jquery.min.js "></script>
     <script src="assets/js/jquery-migrate.min.js "></script>
@@ -208,34 +123,37 @@
     <script src="assets/js/pace.min.js " type="text/javascript "></script>
 
     <script type="text/javascript">
+        $("#cabeceraMenu").load('cabeceraMenu.html');
+        $("#Footer").load('Footer.html');
+
         var evaluacion = localStorage.getItem("idEvaluacion")
         var idusuario =  localStorage.getItem("idusuario")
         var FechaPrueba = localStorage.getItem("fechaEvaluacion");
         var NivelAcademico = localStorage.getItem("nombrenivel");
-        ObtenerPuntaje(evaluacion,idusuario)
+        var tituloEvaluacion = localStorage.getItem("tituloEvaluacion");
+        var cantidadPreguntas = localStorage.getItem("cantidadPreguntas");
 
-         function ObtenerPuntaje(idevaluacion,idusuarioEx)
-         {
-               $.get( "http://localhost:8080/api/consultanotaalumnoxeva/" + idevaluacion + "/" + idusuarioEx, function(data)
-               {
-                   for(var i=0; i<data.length;i++)
-                   {
-                      if(data[i].puntajeobtenido < 10)
-                      {
-                        data[i].puntajeobtenido = "0"+data[i].puntajeobtenido;
-                      }
+        debugger;
+        var buenas = localStorage.getItem("buenas");
+        var malas = localStorage.getItem("malas");
+        var vacias = localStorage.getItem("vacias");
+        var puntajeobtenido = localStorage.getItem("puntajeobtenido");
 
-                      document.getElementById("tituloEvaPrueba").innerHTML = data[i].tituloevaluacion;
-                      document.getElementById("cantidadPreguntasPrueba").innerHTML = data[i].preguntas;
-                      document.getElementById("FechaInicioPrueba").innerHTML = FechaPrueba;
-                      document.getElementById("NivelPrueba").innerHTML = NivelAcademico;
-                      document.getElementById("CorrectasPrueba").innerHTML = data[i].buenas;
-                      document.getElementById("InCorrectasPrueba").innerHTML = data[i].malas;
-                      document.getElementById("VaciasPrueba").innerHTML = data[i].vacias;
-                      document.getElementById("CalificaciónPrueba").innerHTML = data[i].puntajeobtenido;
-                   }
-               });
-         }
+        if(puntajeobtenido < 10)
+        {
+           puntajeobtenido = "0"+puntajeobtenido
+        }
+
+        document.getElementById("tituloEvaPrueba").innerHTML = tituloEvaluacion;
+        document.getElementById("cantidadPreguntasPrueba").innerHTML = cantidadPreguntas;
+        document.getElementById("FechaInicioPrueba").innerHTML = FechaPrueba;
+        document.getElementById("NivelPrueba").innerHTML = NivelAcademico;
+        document.getElementById("CorrectasPrueba").innerHTML = buenas;
+        document.getElementById("InCorrectasPrueba").innerHTML = malas;
+        document.getElementById("VaciasPrueba").innerHTML = vacias;
+        document.getElementById("CalificaciónPrueba").innerHTML = puntajeobtenido;
+
+
     </script>
 </body>
 

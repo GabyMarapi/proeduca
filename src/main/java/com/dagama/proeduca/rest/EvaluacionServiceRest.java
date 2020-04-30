@@ -10,6 +10,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "http://localhost:63342")
 @RequestMapping("/api")
+
 public class EvaluacionServiceRest {
 
     @Autowired
@@ -33,6 +34,9 @@ public class EvaluacionServiceRest {
     @Autowired
     private AsignacionpreguntaNegocioService asignacionpreguntaNegocioService;
 
+    @Autowired
+    private AutoevaluacionesxusuarioNegocioService autoevaluacionesxusuarioNegocioService;
+
     @GetMapping("/evaluacion/{idevaluacion}")
     public Evaluacion obtenerEvaluacion(@PathVariable(value = "idevaluacion") String idevaluacion){
         return evaluacionNegocioService.obtenerEvaluacionxId(idevaluacion);
@@ -48,10 +52,18 @@ public class EvaluacionServiceRest {
         return evaluacionNegocioService.obtenerEvaluacion();
     }
 
-    @GetMapping("/evaluacionxusuario/{idusuario}")
+    @GetMapping("/evaluacionxusuario/{idusuario}/{flag}")
     public List<Evaluacionxusuario> EvaluacionxUsuario(
-            @PathVariable(value = "idusuario") int idusuario){
-        return evaluacionxusuarioNegocioService.Evaluacionxusuario(idusuario);
+            @PathVariable(value = "idusuario") int idusuario,
+            @PathVariable(value = "flag") int flag){
+        return evaluacionxusuarioNegocioService.Evaluacionxusuario(idusuario, flag);
+    }
+
+    @GetMapping("/autoevaluacionxusuario/{idusuario}/{grado}")
+    public List<Autoevaluacionesxusuario> Autoevaluacionesxusuario(
+            @PathVariable(value = "idusuario") int idusuario,
+            @PathVariable(value = "grado") String grado){
+        return autoevaluacionesxusuarioNegocioService.Autoevaluacionesxusuario(idusuario, grado);
     }
 
     @GetMapping("/evaluacionxnivel/{idnivel}")

@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProeducaApplicationTests {
@@ -21,6 +19,8 @@ public class ProeducaApplicationTests {
 	private NivelEstudioNegocioService nivelEstudioNegocioService;
 	@Autowired
 	private EvaluacionNegocioService evaluacionNegocioService;
+	@Autowired
+	private ValidaUsuarioNegocioService validarUsuarioNegocioService;
 
 	@Test
 	public void probarRegistroCurso() {
@@ -35,7 +35,6 @@ public class ProeducaApplicationTests {
 	public void probarRegistroNivelEstudio() {
 		Nivelestudio nivelestudio = new Nivelestudio();
 		nivelestudio.setNombrenivelestudio("BACHILLER");
-		nivelestudio.setIduniversidad(1);
 
 		Nivelestudio N1 = nivelEstudioNegocioService.registrar(nivelestudio);
 		Assert.assertNotNull(N1);

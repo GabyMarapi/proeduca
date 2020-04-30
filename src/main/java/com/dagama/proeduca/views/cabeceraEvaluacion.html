@@ -34,28 +34,46 @@
     <![endif]-->
 </head>
 <body>
-<div id="cabeceraMenu">
 
-</div>
-<br>
-<section class="container">
-    <div class="form-row">
-        <div class="form-group">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong>No se encuentra una evaluación programada en esa fecha</strong><br><br>
-                    <div>
-                        <button id="btnSalirPrueba" class="btn btn-danger" style="left:400px;" onclick="window.location.href='rendirEvaluacion.html'">Volver</button>
-                    </div>
+<div class="top-bar-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 hidden-xs">
+                <div class="top-bar-socials">
+                    <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-facebook">
+                        <i class="fa fa-facebook"></i>
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-twitter">
+                        <i class="fa fa-twitter"></i>
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-google-plus">
+                        <i class="fa fa-youtube"></i>
+                        <i class="fa fa-youtube"></i>
+                    </a>
+                    <a href="#" class="social-icon-sm si-dark si-gray-round si-colored-instagram">
+                        <i class="fa fa-instagram"></i>
+                        <i class="fa fa-instagram"></i>
+                    </a>
                 </div>
-
+            </div>
+            <div class="col-sm-8 text-right">
+                <ul class="list-inline top-dark-right">
+                    <li class="hidden-sm hidden-xs"><i class="fa fa-envelope"></i> proeduca@gmail.com</li>
+                    <li class="hidden-sm hidden-xs"><strong>Bienvenido(a) <span id="nombreUsuario"></span></strong></li>
+                    <li><a class="topbar-icons" href="#"><span><i class="fa fa-search top-search"></i></span></a>
+                    </li>
+                </ul>
+                <div class="search">
+                    <form role="form">
+                        <input type="text" class="form-control" autocomplete="off" placeholder="Buscar">
+                        <span class="search-close"><i class="fa fa-times"></i></span>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</section>
-
-<div id="Footer">
-
 </div>
 
 <script src="assets/js/jquery.min.js "></script>
@@ -91,10 +109,21 @@
 <script src="assets/cubeportfolio/js/jquery.cubeportfolio.min.js " type="text/javascript "></script>
 <script src="assets/js/cube-portfolio.js " type="text/javascript "></script>
 <script src="assets/js/pace.min.js " type="text/javascript "></script>
-<!--rev slider start-->
+
 <script>
-     $("#cabeceraMenu").load('cabeceraMenu.html');
-      $("#Footer").load('Footer.html');
+    var idusuario = sessionStorage.getItem("idusuario");
+    var idtipo = sessionStorage.getItem("idtipo");
+    var nombrealumno = sessionStorage.getItem("nombrealumno");
+
+    if(nombrealumno == "" || nombrealumno == null || nombrealumno == undefined ||
+       idtipo == "" || idtipo == null || idtipo == undefined ||
+       nombrealumno == "" || nombrealumno == null || nombrealumno == undefined)
+       {
+           window.location.href = "login.html";
+       }
+
+    document.getElementById("nombreUsuario").innerHTML = nombrealumno
 </script>
+
 </body>
 </html>
